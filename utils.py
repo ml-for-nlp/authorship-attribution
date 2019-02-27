@@ -1,11 +1,13 @@
 import os
 
-def get_documents():
+def get_documents(feature_type,ngram_size):
     documents = {}
     files = [os.path.join('./data/training/', f) for f in os.listdir('./data/training/') if os.path.isfile(os.path.join('./data/training/', f))]
     for f in files:
-        #author, doc_length, words = process_document_ngrams(f,3)
-        author, doc_length, words = process_document_words(f)
+        if feature_type == "chars":
+            author, doc_length, words = process_document_ngrams(f,ngram_size)
+        elif feature_type == "words":
+            author, doc_length, words = process_document_words(f)
         documents[f] = [author, doc_length, words]
     return documents
 
@@ -58,3 +60,18 @@ def process_document_ngrams(filename, n):
         c+=1
     f.close()
     return author, doc_length, ngrams
+
+
+def top_cond_probs_by_author(conditional_probabilities,author,n):
+    cps = {}
+    for term,probs in conditional_probabilities.items():
+        cps[term] = probs[author]
+    
+    c = 0
+    for term in sorted(cps, key=cps.get, reverse=True):
+        if c < n:
+            print(c,term,"score:",cps[term])
+            c+=1
+        else:
+            break
+        

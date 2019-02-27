@@ -1,12 +1,45 @@
+"""Authorship Attribution
+
+Usage:
+  attribution.py --words <filename>
+  attribution.py --chars=<n> <filename>
+  attribution.py (-h | --help)
+  attribution.py --version
+
+Options:
+  -h --help     Show this screen.
+  --version     Show version.
+  --words
+  --chars=<kn>  Length of char ngram [default: 3].
+
+"""
+
 import sys
 import os
 import math
-from utils import process_document_words, process_document_ngrams, get_documents, extract_vocab
+from utils import process_document_words, process_document_ngrams, get_documents, extract_vocab, top_cond_probs_by_author
+from docopt import docopt
+
+if __name__ == '__main__':
+    arguments = docopt(__doc__, version='Authorship Attribution 1.1')
+
+
+'''Default values for hyperparameters'''
+feature_type = "words"
+ngram_size = 3
+testfile = "data/emma.txt"
+
+if arguments["--words"]:
+    feature_type = "words"
+elif arguments["--chars"]:
+    feature_type = "chars"
+    ngram_size = int(arguments["--chars"])
+testfile = arguments["<filename>"]
 
 
 alpha = 0.0001
 classes = ["Austen", "Carroll", "Grahame", "Kipling"]
-documents = get_documents()
+documents = get_documents(feature_type, ngram_size)
 
 def count_docs(documents):
     return len(documents)
@@ -51,8 +84,10 @@ def train_naive_bayes(classes, documents):
 
 def apply_naive_bayes(classes, vocabulary, priors, conditional_probabilities, test_document):
     scores = {}
-    #author, doc_length, words = process_document_ngrams(test_document,3)
-    author, doc_length, words = process_document_words(test_document)
+    if feature_type == "chars":
+        author, doc_length, words = process_document_ngrams(test_document,ngram_size)
+    elif feature_type == "words":
+        author, doc_length, words = process_document_words(test_document)
     for c in classes:
         scores[c] = math.log(priors[c])
         for t in words:
@@ -64,4 +99,9 @@ def apply_naive_bayes(classes, vocabulary, priors, conditional_probabilities, te
         print(author,"score:",scores[author])
 
 vocabulary, priors, conditional_probabilities = train_naive_bayes(classes, documents)
-apply_naive_bayes(classes, vocabulary, priors, conditional_probabilities, sys.argv[1])
+
+for author in classes:
+    print("\nBest features for",author)
+    top_cond_probs_by_author(conditional_probabilities, author, 10)
+
+apply_naive_bayes(classes, vocabulary, priors, conditional_probabilities, testfile)
