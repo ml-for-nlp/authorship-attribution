@@ -15,7 +15,7 @@ def extract_vocab(documents):
     vocabulary = []
     for values in documents.values():
         vocabulary += list(values[2].keys())
-    print("First 20 words in the vocabulary:",vocabulary[:20])
+    #print("First 20 words in the vocabulary:",vocabulary[:20])
     return vocabulary
 
 def process_document_words(filename):
