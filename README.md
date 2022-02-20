@@ -7,7 +7,7 @@ This tutorial shows an example use of the Naive Bayes algorithm. The system is t
 
 You'll need the docopt package to run the code from the terminal. If you need to install it on your system, do:
 
-    sudo pip3 install docopt
+    sudo pip3 install docopt-ng
 
 
 ## Run the code
