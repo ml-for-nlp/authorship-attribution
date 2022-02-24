@@ -21,8 +21,6 @@ from utils import process_document_words, process_document_ngrams, get_documents
 from docopt import docopt
 
 
-'''Default values for hyperparameters'''
-
 def count_docs(documents):
     return len(documents)
 
