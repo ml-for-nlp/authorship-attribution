@@ -10,7 +10,7 @@ Options:
   -h --help     Show this screen.
   --version     Show version.
   --words
-  --chars=<n>  Length of char ngram [default: 3].
+  --chars=<n>  Length of char ngram.
 
 """
 
@@ -22,9 +22,6 @@ from docopt import docopt
 
 
 '''Default values for hyperparameters'''
-feature_type = "words"
-ngram_size = 3
-testfile = "data/emma.txt"
 
 def count_docs(documents):
     return len(documents)
@@ -90,11 +87,12 @@ if __name__ == '__main__':
 
     if arguments["--words"]:
         feature_type = "words"
-    elif arguments["--chars"]:
+        ngram_size = -1
+    if arguments["--chars"]:
         feature_type = "chars"
         ngram_size = int(arguments["--chars"])
-    testfile = arguments["<filename>"]
 
+    testfile = arguments["<filename>"]
 
     alpha = 0.1
     classes = ["Austen", "Carroll", "Grahame", "Kipling"]
