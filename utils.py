@@ -50,7 +50,7 @@ def process_document_ngrams(filename, n):
             #print(l)
             author = l.replace("#Author: ","")
         else:
-            for i in range(len(l)-n):
+            for i in range(len(l)-n+1):
                 ngram=l[i:i+n]
                 if ngram in ngrams:
                     ngrams[ngram]+=1

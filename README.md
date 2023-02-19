@@ -1,6 +1,6 @@
 # Authorship attribution tutorial
 
-This tutorial shows an example use of the Naive Bayes algorithm. The system is trained on five texts by four authors: Austen, Kipling, Carroll and Grahame. It is then required to guess the author of an additional text (which -- spoiler alert -- is Jane Austen's *Emma*).
+This tutorial shows an example use of the Naive Bayes algorithm. The system is trained on five texts by four authors: Austen, Shelley, Carroll and Grahame. It is then required to guess the author of an additional text (which -- spoiler alert -- is Jane Austen's *Emma*).
 
 
 ## Requirements
@@ -14,11 +14,11 @@ You'll need the docopt package to run the code from the terminal. If you need to
 
 To run the code, type:
 
-    python3 attribution.py --words data/emma.txt
+    python3 attribution.py --words data/test/emma.txt
 
 Or alternatively:
 
-    python3 attribution.py --chars 3 data/emma.txt
+    python3 attribution.py --chars 3 data/test/emma.txt
 
 The first alternative computes a model over words, as we saw in class. The second alternative uses character ngrams of the size given to the system.
 
